@@ -64,5 +64,5 @@ def fft(file):
 
   return output
 
-fft(str(sys.argv[1]))
+print(fft(str(sys.argv[1])))
 #TODO send the API call directly and then

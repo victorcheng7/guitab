@@ -19,6 +19,7 @@ button.addEventListener("click", function(){
       success: function(response){
         console.log(response);
         //TODO get the response
+        jtab.render($('#mytab'),'Am7 C');
         oOutput.innerHTML = "Uploaded!" + JSON.stringify(response);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {

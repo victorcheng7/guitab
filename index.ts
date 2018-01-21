@@ -7,6 +7,7 @@ import * as path from 'path'
 import * as Loki from 'lokijs'
 import { audioFilter, loadCollection, cleanFolder } from './utils';
 var efp = require("express-form-post");
+var mp3ToBin = require('../mp3ToBin');
 
 
 const DB_NAME = 'db.json';
@@ -39,12 +40,30 @@ app.post("/postmp3", upload.single('audio'), async (req, res) => {
         console.log(data);
         db.saveDatabase();
         res.send({ id: data.$loki, fileName: data.filename, originalName: data.originalname });
-        //TODO include Vaibhav's data
+
+        if(File format is mp3){
+          mp3ToBin.mp3ToWave(data.filename);
+        }
+        else if (File format is wav){
+
+        }
+        mp3ToBin.fourier("./uploads/" + data.filename);
+
+        //TODO from fourier data, send request to URL, wait for response, once response comes send res.send()
       }
+
       catch (err) {
         console.log(err);
         res.sendStatus(400);
       }
+});
+/*
+fs.readFile('./uploads/' + data.filename, function read(err, data) {
+    if (err) {
+        throw err;
+    }
+    console.log(data);   // Put all of the code here (not the best solution)
+    //processFile();          // Or put the next step in a function and invoke it
 });
 
 const formPost = efp({
@@ -73,7 +92,7 @@ app.post("/upload", formPost.middleware(), function(req, res, next) {
     console.log("I just received files", req.files);
     res.send("Upload successful!");
 });
-
+*/
 app.listen(3000, function () {
     console.log('listening on port 3000!');
 })
