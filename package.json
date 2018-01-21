@@ -3,6 +3,7 @@
   "version": "8.9.3",
   "description": "",
   "main": "index.js",
+  "node": "8.9.3",
   "dependencies": {
     "audiobuffer-to-wav": "^1.0.0",
     "cloudconvert": "^1.1.2",
