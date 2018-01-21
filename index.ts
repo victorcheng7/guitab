@@ -6,6 +6,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as Loki from 'lokijs'
 import { audioFilter, loadCollection, cleanFolder } from './utils';
+var efp = require("express-form-post");
+
 
 const DB_NAME = 'db.json';
 const COLLECTION_NAME = 'audio';
@@ -33,7 +35,8 @@ app.post("/postmp3", upload.single('audio'), async (req, res) => {
       try{
         const col = await loadCollection(COLLECTION_NAME, db);
         const data = col.insert(req.file);
-
+        console.log("---------------------------");
+        console.log(data);
         db.saveDatabase();
         res.send({ id: data.$loki, fileName: data.filename, originalName: data.originalname });
         //TODO include Vaibhav's data
@@ -44,6 +47,32 @@ app.post("/postmp3", upload.single('audio'), async (req, res) => {
       }
 });
 
+const formPost = efp({
+    store: "disk",
+    directory: path.join(__dirname, "tmp"),
+    maxfileSize: 10000000,
+    filename: function(req, file, cb) {
+        cb(Date.now() + "-" + "yo");
+    },
+    validateFile: function(file, cb) {
+        if(file.mimetype != "audio/wav") {
+            return cb(false);
+        }
+        return cb();
+    },
+    validateBody: function(body, cb) {
+        // validates password length before uploading file
+        if(body.password.length > 7) {
+            return cb(false);
+        }
+        cb();
+    }
+});
+
+app.post("/upload", formPost.middleware(), function(req, res, next) {
+    console.log("I just received files", req.files);
+    res.send("Upload successful!");
+});
 
 app.listen(3000, function () {
     console.log('listening on port 3000!');

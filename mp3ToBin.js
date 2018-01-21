@@ -8,10 +8,12 @@ var PythonShell = require('python-shell');
 var cloudconvert = new (require('cloudconvert'))('59gWXStyZW-QLDnb7A9rj5pi7ki5goBcKVKty491pzcd1YoiNJmSShFA8H4Sm2Qe3IRLf8VluYDZFSTYqRdtDQ');
 
 //mp3ToWave('c.mp3');
-fourierIntermediary('c.wav');
+//fourierIntermediary('c.wav');
 
-function fourierPython(wavData){
-    var myPythonScript = "script.py"; //TODO change the script file name
+fourier('c.wav');
+
+function fourier(wavData){
+    var myPythonScript = "fft.py";
     var pythonExecutable = "python";
 
     // Function to convert an Uint8Array to a string
@@ -53,13 +55,14 @@ function mp3ToWave(mp3File){
   });
 }
 
+/*
 function fourierIntermediary(wavFile){
   let buffer = fs.readFileSync(wavFile);
   let result = wav.decode(buffer);
   /*
   console.log(result.sampleRate);
   console.log(result.channelData); // array of Float32Arrays
-*/
+
   wav.encode(result.channelData, { sampleRate: result.sampleRate, float: true, bitDepth: 32 });\
   fourier(result.channelData); //TODO what are the parameters
-}
+}*/
