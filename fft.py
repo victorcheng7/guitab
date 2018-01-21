@@ -64,5 +64,6 @@ def fft(file):
 
   return output
 
-print(fft(str(sys.argv[1])))
-#TODO send the API call directly and then
+fourierList = fft(str(sys.argv[1]));
+fourierString = ''.join(str(e) for e in fourierList)
+sys.stdout.write(fourierString)

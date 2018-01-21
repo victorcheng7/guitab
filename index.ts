@@ -8,6 +8,7 @@ import * as Loki from 'lokijs'
 import { audioFilter, loadCollection, cleanFolder } from './utils';
 var efp = require("express-form-post");
 var mp3ToBin = require('../mp3ToBin');
+var request = require('request');
 
 
 const DB_NAME = 'db.json';
@@ -36,22 +37,21 @@ app.post("/postmp3", upload.single('audio'), async (req, res) => {
       try{
         const col = await loadCollection(COLLECTION_NAME, db);
         const data = col.insert(req.file);
-        console.log("---------------------------");
+
         console.log(data);
         db.saveDatabase();
         res.send({ id: data.$loki, fileName: data.filename, originalName: data.originalname });
 
-        if(File format is mp3){
-          mp3ToBin.mp3ToWave(data.filename);
+        var fourierResult;
+        if(data.mimetype === "audio/mp3"){
+          //TODO fix error when uploading mp3 for the last two functions
+          mp3ToBin.mp3ToWave('./uploads/' + data.filename);
+          mp3ToBin.fourier("./mp3/" + data.filename + 'converted.wav', res);
         }
-        else if (File format is wav){
-
+        else if (data.mimetype === "audio/wav"){
+          mp3ToBin.fourier("./uploads/" + data.filename, res);
         }
-        mp3ToBin.fourier("./uploads/" + data.filename);
-
-        //TODO from fourier data, send request to URL, wait for response, once response comes send res.send()
       }
-
       catch (err) {
         console.log(err);
         res.sendStatus(400);

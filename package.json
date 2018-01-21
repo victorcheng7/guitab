@@ -20,6 +20,7 @@
     "nodemon": "^1.14.11",
     "path": "^0.12.7",
     "python-shell": "^0.4.0",
+    "request": "^2.83.0",
     "speaker": "^0.4.0",
     "typescript": "^2.1.6",
     "wav": "^1.0.1",
