@@ -5,6 +5,8 @@ var PythonShell = require('python-shell');
 var request = require('request');
 
 var cloudconvert = new (require('cloudconvert'))('pCXvtYhe3KRXQNXdT0mrvIvLdwrgRbqC0dymvWBNdBo_9sjtXNmgGLpC-1iMxnqUcu1UPBo_lbZ455EXIlUxnw');
+//NOTE backup key cAQywWaxUXrkHjYyI7MVGY93oxz_Bc0UAiklefi7EywH4o2YecrWsV7M6xbew0z3zkfHAACvcUCPhQIjjWxS6w
+
 
 //mp3ToWave('c.mp3');
 //fourier('c.wav');
@@ -45,8 +47,12 @@ module.exports = {
             if (err) {
                 throw err;
             }
-            //console.log(JSON.stringify(JSON.parse(data)));
-            request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: data.toString('utf8')}}, function(err,httpResponse,body){
+            //Just in case https://nxtpitch.herokuapp.com/
+            var req = request.post('http://35.193.223.162:8080/', function (err, resp, body) { //TODO change the endpoint
+              if (err) {
+                console.log('Error!');
+                res.send({result: "Error"});
+              } else {
                 console.log(body);
                 fs.writeFile("fourier.txt", "", function(err) {
                     if(err) {
@@ -55,6 +61,11 @@ module.exports = {
                     console.log("Emptied fourier.txt");
                 });
                 res.send({result: body});
+              }
+            });
+            var form = req.form();
+            form.append('input', data.toString('utf8'), {
+              contentType: 'text/plain'
             });
         });
     });
