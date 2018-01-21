@@ -66,4 +66,6 @@ def fft(file):
 
 fourierList = fft(str(sys.argv[1]));
 fourierString = ''.join(str(e) for e in fourierList)
-sys.stdout.write(fourierString)
+fh = open("fourier.txt","w")
+fh.write(fourierString)
+fh.close()

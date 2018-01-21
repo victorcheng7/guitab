@@ -24,11 +24,7 @@ module.exports = {
 
     // Handle normal output
     scriptExecution.stdout.on('data', (data) => {
-        //console.log("fourier data", data);
-        request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: JSON.stringify(data)}}, function(err,httpResponse,body){
-          console.log(body);
-          //TODO res.send(body)
-        });
+        //console.log("fourier data", data)
         console.log(uint8arrayToString(data));
     });
 
@@ -40,6 +36,17 @@ module.exports = {
 
     scriptExecution.on('exit', (code) => {
         console.log("Process quit with code : " + code);
+
+        fs.readFile('fourier.txt', function read(err, data) {
+            if (err) {
+                throw err;
+            }
+            console.log("FIRED");
+            request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: JSON.stringify(data)}}, function(err,httpResponse,body){
+              console.log(body);
+              //TODO res.send(body)
+            });
+        });
     });
   },
   mp3ToWave: function (mp3File) {
@@ -57,15 +64,3 @@ module.exports = {
     });
   }
 };
-
-/*
-function fourierIntermediary(wavFile){
-  let buffer = fs.readFileSync(wavFile);
-  let result = wav.decode(buffer);
-  /*
-  console.log(result.sampleRate);
-  console.log(result.channelData); // array of Float32Arrays
-
-  wav.encode(result.channelData, { sampleRate: result.sampleRate, float: true, bitDepth: 32 });\
-  fourier(result.channelData); //TODO what are the parameters
-}*/

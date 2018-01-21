@@ -44,7 +44,7 @@ app.post("/postmp3", upload.single('audio'), async (req, res) => {
 
         var fourierResult;
         if(data.mimetype === "audio/mp3"){
-          //TODO fix error when uploading mp3 for the last two functions
+          //BUG fix error when uploading mp3 for the last two functions
           mp3ToBin.mp3ToWave('./uploads/' + data.filename);
           mp3ToBin.fourier("./mp3/" + data.filename + 'converted.wav', res);
         }
