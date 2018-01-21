@@ -100,7 +100,7 @@ app.post("/upload", formPost.middleware(), function(req, res, next) {
     res.send("Upload successful!");
 });
 */
-port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 app.listen(port, function () {
-    console.log('listening on port !' + port );
+    console.log('listening on port !' + port);
 })
