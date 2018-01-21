@@ -41,16 +41,16 @@ module.exports = {
             if (err) {
                 throw err;
             }
-            console.log("FIRED");
-            request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: JSON.stringify(data)}}, function(err,httpResponse,body){
+            //console.log(JSON.stringify(JSON.parse(data)));
+            request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: data.toString('utf8')}}, function(err,httpResponse,body){
               console.log(body);
-              //TODO res.send(body)
+              res.send({result: body});
             });
         });
     });
   },
   mp3ToWave: function (mp3File) {
-    fs.createReadStream(mp3File)
+    fs.createReadStream('uploads/' + mp3File)
     .pipe(cloudconvert.convert({
         inputformat: 'mp3',
         outputformat: 'wav',

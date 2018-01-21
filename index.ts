@@ -10,11 +10,19 @@ var efp = require("express-form-post");
 var mp3ToBin = require('../mp3ToBin');
 var request = require('request');
 
-
 const DB_NAME = 'db.json';
 const COLLECTION_NAME = 'audio';
 const UPLOAD_PATH = 'uploads';
-const upload = multer({ dest: `${UPLOAD_PATH}/`, fileFilter: audioFilter });
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.mp3')
+  }
+})
+const upload = multer({storage: storage, fileFilter: audioFilter});
+//const upload = multer({ dest: `${UPLOAD_PATH}/`, fileFilter: audioFilter });
 const db = new Loki(`${UPLOAD_PATH}/${DB_NAME}`, { persistenceMethod: 'fs' });
 
 // optional: clean all data before start
@@ -26,7 +34,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.set('view engine', '.ejs');
-console.log(__dirname);
 app.use(express.static(__dirname + '/../public'));
 
 app.get("/", (req, res) => {
@@ -34,28 +41,27 @@ app.get("/", (req, res) => {
 });
 
 app.post("/postmp3", upload.single('audio'), async (req, res) => {
-      try{
+    try{
         const col = await loadCollection(COLLECTION_NAME, db);
         const data = col.insert(req.file);
 
-        console.log(data);
+        //console.log(data);
         db.saveDatabase();
-        res.send({ id: data.$loki, fileName: data.filename, originalName: data.originalname });
+        //res.send({ id: data.$loki, fileName: data.filename, originalName: data.originalname });
 
         var fourierResult;
         if(data.mimetype === "audio/mp3"){
-          //BUG fix error when uploading mp3 for the last two functions
-          mp3ToBin.mp3ToWave('./uploads/' + data.filename);
+          mp3ToBin.mp3ToWave(data.filename);
           mp3ToBin.fourier("./mp3/" + data.filename + 'converted.wav', res);
         }
         else if (data.mimetype === "audio/wav"){
           mp3ToBin.fourier("./uploads/" + data.filename, res);
         }
-      }
-      catch (err) {
-        console.log(err);
-        res.sendStatus(400);
-      }
+    }
+    catch (err) {
+      console.log(err);
+      res.sendStatus(400);
+    }
 });
 /*
 fs.readFile('./uploads/' + data.filename, function read(err, data) {
