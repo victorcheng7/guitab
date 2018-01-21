@@ -27,7 +27,7 @@
     "xhr": "^2.4.1"
   },
   "engines": {
-    "node": "8.9.3"
+    "node": "9.4.0"
   },
   "devDependencies": {
     "@types/del": "^2.2.32",
