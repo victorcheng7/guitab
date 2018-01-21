@@ -3,7 +3,6 @@
   "version": "8.9.3",
   "description": "",
   "main": "index.js",
-  "node": "8.9.3",
   "dependencies": {
     "audiobuffer-to-wav": "^1.0.0",
     "cloudconvert": "^1.1.2",
@@ -26,6 +25,9 @@
     "typescript": "^2.1.6",
     "wav": "^1.0.1",
     "xhr": "^2.4.1"
+  },
+  "engines": {
+    "node": "8.9.3"
   },
   "devDependencies": {
     "@types/del": "^2.2.32",
