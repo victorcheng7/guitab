@@ -100,6 +100,6 @@ app.post("/upload", formPost.middleware(), function(req, res, next) {
     res.send("Upload successful!");
 });
 */
-app.listen(3000, function () {
+app.listen(3000 || process.env.PORT, function () {
     console.log('listening on port 3000!');
 })
