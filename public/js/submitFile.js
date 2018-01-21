@@ -36,6 +36,7 @@ button.addEventListener("click", function(){
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);
         oOutput.innerHTML = "Error " + errorThrown + " occurred when trying to upload your file.<br \/>";
+        button.disabled = false;
         myFunction();
       }
   });
