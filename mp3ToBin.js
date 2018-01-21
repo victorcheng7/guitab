@@ -45,8 +45,12 @@ module.exports = {
             if (err) {
                 throw err;
             }
-            //console.log(JSON.stringify(JSON.parse(data)));
-            request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: data.toString('utf8')}}, function(err,httpResponse,body){
+
+            var req = request.post('https://nxtpitch.herokuapp.com/', function (err, resp, body) {
+              if (err) {
+                console.log('Error!');
+                res.send({result: "Error"});
+              } else {
                 console.log(body);
                 fs.writeFile("fourier.txt", "", function(err) {
                     if(err) {
@@ -55,6 +59,11 @@ module.exports = {
                     console.log("Emptied fourier.txt");
                 });
                 res.send({result: body});
+              }
+            });
+            var form = req.form();
+            form.append('input', data.toString('utf8'), {
+              contentType: 'text/plain'
             });
         });
     });
