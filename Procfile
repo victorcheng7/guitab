@@ -1,1 +1,2 @@
-web: NODE_ENV=production node server.js
+web: NODE_ENV=production node index.ts
+web: python ftt.py
