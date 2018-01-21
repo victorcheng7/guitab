@@ -25,7 +25,10 @@ var storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '.mp3');
+        if (file.mimetype === "audio/mp3")
+            cb(null, Date.now() + '.mp3');
+        else if (file.mimetype === "audio/wav")
+            cb(null, Date.now() + '.wav');
     }
 });
 const upload = multer({ storage: storage, fileFilter: utils_1.audioFilter });
@@ -51,8 +54,8 @@ app.post("/postmp3", upload.single('audio'), (req, res) => __awaiter(this, void 
         //res.send({ id: data.$loki, fileName: data.filename, originalName: data.originalname });
         var fourierResult;
         if (data.mimetype === "audio/mp3") {
-            mp3ToBin.mp3ToWave(data.filename);
-            mp3ToBin.fourier("./mp3/" + data.filename + 'converted.wav', res);
+            mp3ToBin.mp3ToWave(data.filename, mp3ToBin.fourier, res);
+            //mp3ToBin.fourier("./mp3/" + data.filename.slice(0,-4) + 'converted.wav', res);
         }
         else if (data.mimetype === "audio/wav") {
             mp3ToBin.fourier("./uploads/" + data.filename, res);

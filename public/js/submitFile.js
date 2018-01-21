@@ -1,13 +1,17 @@
 var button = document.getElementById('send');
 
 button.addEventListener("click", function(){
-  button.disabled = true;
   var file = document.getElementById('file');
   var form = document.forms.namedItem("audio");
   var oOutput = document.getElementsByClassName("output")[0],
       oData = new FormData(form);
 
-//TODO while ajax is waiting, include HTML
+  if(file.files[0] != null) {
+    myFunction();
+    button.disabled = true;
+  }
+
+
   oData.append('audio', file.files[0], file.files[0].name);
   $.ajax({
       url: '/postmp3',
@@ -27,13 +31,24 @@ button.addEventListener("click", function(){
         jtab.render($('#mytab'),output);
         oOutput.innerHTML = "Uploaded!" + JSON.stringify(response);
         button.disabled = false;
+        myFunction();
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);
         oOutput.innerHTML = "Error " + errorThrown + " occurred when trying to upload your file.<br \/>";
+        myFunction();
       }
   });
 });
+
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
 
 function noteToTab(num){
   var output = "";

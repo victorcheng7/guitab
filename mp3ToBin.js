@@ -4,7 +4,7 @@ var db = require('decibels');
 var PythonShell = require('python-shell');
 var request = require('request');
 
-var cloudconvert = new (require('cloudconvert'))('59gWXStyZW-QLDnb7A9rj5pi7ki5goBcKVKty491pzcd1YoiNJmSShFA8H4Sm2Qe3IRLf8VluYDZFSTYqRdtDQ');
+var cloudconvert = new (require('cloudconvert'))('pCXvtYhe3KRXQNXdT0mrvIvLdwrgRbqC0dymvWBNdBo_9sjtXNmgGLpC-1iMxnqUcu1UPBo_lbZ455EXIlUxnw');
 
 //mp3ToWave('c.mp3');
 //fourier('c.wav');
@@ -36,6 +36,10 @@ module.exports = {
 
     scriptExecution.on('exit', (code) => {
         console.log("Process quit with code : " + code);
+        if(code == 1){
+          res.send({result: "Error process quit with code"});
+          return;
+        }
 
         fs.readFile('fourier.txt', function read(err, data) {
             if (err) {
@@ -43,13 +47,19 @@ module.exports = {
             }
             //console.log(JSON.stringify(JSON.parse(data)));
             request.post({url:'https://nxtpitch.herokuapp.com/', form:{input: data.toString('utf8')}}, function(err,httpResponse,body){
-              console.log(body);
-              res.send({result: body});
+                console.log(body);
+                fs.writeFile("fourier.txt", "", function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    console.log("Emptied fourier.txt");
+                });
+                res.send({result: body});
             });
         });
     });
   },
-  mp3ToWave: function (mp3File) {
+  mp3ToWave: function (mp3File, callback, res) {
     fs.createReadStream('uploads/' + mp3File)
     .pipe(cloudconvert.convert({
         inputformat: 'mp3',
@@ -58,9 +68,10 @@ module.exports = {
             quality : 75,
         }
      }))
-    .pipe(fs.createWriteStream('mp3/' + mp3File + 'converted.wav'))
+    .pipe(fs.createWriteStream('mp3/' + mp3File.slice(0,-4) + 'converted.wav'))
     .on('finish', function() {
         console.log('Done!');
+        callback("./mp3/" + mp3File.slice(0,-4) + 'converted.wav', res);
     });
   }
 };

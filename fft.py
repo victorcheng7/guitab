@@ -47,7 +47,7 @@ def animate(i, wf, MAX_y):
 
 def fft(file):
   MAX_y = 2.0 ** (SAMPLE_SIZE * 8 - 1)
-  wf = wave.open(file, 'rb')
+  wf = wave.open(file)
   #assert wf.getnchannels() == CHANNELS
   #assert wf.getsampwidth() == SAMPLE_SIZE
   #RATE = wf.getframerate()
