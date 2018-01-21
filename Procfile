@@ -1,2 +1,1 @@
-web: NODE_ENV=production node index.ts
-web: python ftt.py
+web: NODE_ENV=production node dist/index.js
