@@ -7,7 +7,7 @@ button.addEventListener("click", function(){
   var oOutput = document.getElementsByClassName("output")[0],
       oData = new FormData(form);
 
-
+//TODO while ajax is waiting, include HTML
   oData.append('audio', file.files[0], file.files[0].name);
   $.ajax({
       url: '/postmp3',
