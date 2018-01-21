@@ -31,22 +31,24 @@
       <div class="row center">
         <h5 class="header col s12 light">Transform mp3 to chords for you to play</h5>
       </div>
-      <div class="row center">
-        <form action="#">
+      <div class="row center col m6">
+
+        <!--<form action="" enctype="multipart/form-data" method="post" name="audio" id="form">-->
           <div class="file-field input-field">
             <div class="btn">
               <span>File</span>
-              <input type="file">
+              <input id="file" type="file" accept=".mp3, .wav" name="audio" required>
             </div>
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text">
             </div>
           </div>
-        </form>
+          <input id="send" class="btn light-green darken-2 btn-large" type="submit" value="Transform"/>
+        <!--</form>-->
       </div>
       <br><br>
-
     </div>
+    <div class="output"> </div>
   </div>
 
 
@@ -56,8 +58,9 @@
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="js/materialize.js"></script>
-  <script src="js/init.js"></script>
+  <script src="/js/materialize.js"></script>
+  <script src="/js/init.js"></script>
+  <script src="/js/submitFile.js"></script>
 
   </body>
 </html>
