@@ -4,7 +4,9 @@ var db = require('decibels');
 var PythonShell = require('python-shell');
 var request = require('request');
 
-var cloudconvert = new (require('cloudconvert'))('pCXvtYhe3KRXQNXdT0mrvIvLdwrgRbqC0dymvWBNdBo_9sjtXNmgGLpC-1iMxnqUcu1UPBo_lbZ455EXIlUxnw');
+var cloudconvert = new (require('cloudconvert'))('cAQywWaxUXrkHjYyI7MVGY93oxz_Bc0UAiklefi7EywH4o2YecrWsV7M6xbew0z3zkfHAACvcUCPhQIjjWxS6w');
+//NOTE backup key cAQywWaxUXrkHjYyI7MVGY93oxz_Bc0UAiklefi7EywH4o2YecrWsV7M6xbew0z3zkfHAACvcUCPhQIjjWxS6w
+
 
 //mp3ToWave('c.mp3');
 //fourier('c.wav');
@@ -45,8 +47,8 @@ module.exports = {
             if (err) {
                 throw err;
             }
-
-            var req = request.post('https://nxtpitch.herokuapp.com/', function (err, resp, body) {
+            //Just in case https://nxtpitch.herokuapp.com/
+            var req = request.post('http://35.193.223.162:8080/', function (err, resp, body) { //TODO change the endpoint
               if (err) {
                 console.log('Error!');
                 res.send({result: "Error"});
