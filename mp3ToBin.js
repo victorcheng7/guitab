@@ -50,18 +50,19 @@ module.exports = {
             //Just in case https://nxtpitch.herokuapp.com/
             var req = request.post('http://35.193.223.162:8080/', function (err, resp, body) { //TODO change the endpoint
               if (err) {
-                console.log('Error!');
+                console.log('Error!', err);
                 res.send({result: "Error"});
               } else {
                 console.log(body);
-                fs.writeFile("fourier.txt", "", function(err) {
+                res.send({result: body});
+              }
+
+              fs.writeFile("fourier.txt", "", function(err) {
                     if(err) {
                         return console.log(err);
                     }
                     console.log("Emptied fourier.txt");
                 });
-                res.send({result: body});
-              }
             });
             var form = req.form();
             form.append('input', data.toString('utf8'), {
