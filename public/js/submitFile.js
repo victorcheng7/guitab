@@ -22,14 +22,19 @@ button.addEventListener("click", function(){
       processData: false, // NEEDED, DON'T OMIT THIS
       dataType: "json",
       success: function(response){
-        var responseMusic = JSON.parse(response.result);
-        var output = "";
-        for(var i = 0; i < responseMusic.length; i++){
-          output += (noteToTab(responseMusic[i]) + " ");
+        try {
+          var responseMusic = JSON.parse(response.result);
+          var output = "";
+          for(var i = 0; i < responseMusic.length; i++){
+            output += (noteToTab(responseMusic[i]) + " ");
+          }
+          console.log(output);
+          jtab.render($('#mytab'),output);
+          oOutput.innerHTML = "Uploaded!" + JSON.stringify(response);
+        } catch (err) {
+          oOutput.innerHTML = response.result;
         }
-        console.log(output);
-        jtab.render($('#mytab'),output);
-        oOutput.innerHTML = "Uploaded!" + JSON.stringify(response);
+        
         button.disabled = false;
         myFunction();
       },
