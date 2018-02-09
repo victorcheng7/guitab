@@ -51,7 +51,7 @@ module.exports = {
             var req = request.post('http://35.193.223.162:8080/', function (err, resp, body) { //TODO change the endpoint
               if (err) {
                 console.log('Error!', err);
-                res.send({result: "Error"});
+                res.send({result: "Error" + err});
               } else {
                 console.log(body);
                 res.send({result: body});
